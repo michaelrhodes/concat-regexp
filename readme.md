@@ -15,7 +15,7 @@ npm install concat-regexp
 var concat = require('concat-regexp')
 
 var username = 'alice'
-concat(/^\/users\//, username , /\/?/, RegExp('$', 'i'))
+concat(/^\/users\//, username, /\/?/, RegExp('$', 'i'))
 // => /^\/users\/alice\/?$/i
 ```
 
