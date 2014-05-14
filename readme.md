@@ -6,8 +6,8 @@ concat-regexp is a function that takes a series of regular expressions (as Strin
 [![Browser support](https://ci.testling.com/michaelrhodes/concat-regexp.png)](https://ci.testling.com/michaelrhodes/concat-regexp)
 
 ## Install
-```
-npm install concat-regexp
+```sh
+$ npm install concat-regexp
 ```
 
 ### Example
