@@ -1,6 +1,6 @@
 var slice = Array.prototype.slice
 var boundary = /(^\/|\/$)/g
-var modifier = /([mig]*)?$/
+var modifier = /([migy]*)?$/
 
 module.exports = function() {
   var pieces = slice.call(arguments)
