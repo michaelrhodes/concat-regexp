@@ -10,6 +10,7 @@ module.exports = function() {
 
   var i = 0
   var last = pieces.length - 1
+  var loner = last === i 
 
   for (; i <= last; i++) {
     // Be kind, tolerate undefined
@@ -19,6 +20,13 @@ module.exports = function() {
 
     // Remove forward-slash boundaries
     piece = pieces[i].toString()
+
+    // Don’t strip the boundaries of
+    // lone regular expressions
+    if (loner && boundary.test(piece)) {
+      regexp += piece
+      continue
+    }
 
     // Add sanitised piece
     if (i < last) {

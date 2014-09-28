@@ -34,3 +34,13 @@ run('it adds modifiers', function(test) {
 
   test.end()
 })
+
+run('it handles lone regular expressions like RegExp', function(test) {
+  test.deepEqual(
+    concat('/a/'),
+    RegExp('/a/'),
+    RegExp('/a/').toString()
+  )
+
+  test.end()
+})
