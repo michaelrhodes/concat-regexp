@@ -1,4 +1,5 @@
-var run = require('tape').test
+var run = require('tape')
+var escape = require('escape-string-regexp')
 var concat = require('../')
 
 run('it combines string and regexp objects', function(test) {
@@ -6,27 +7,30 @@ run('it combines string and regexp objects', function(test) {
   var result = concat(
     /([a-z0-9]{12,16})/, '[f-x]{2}'
   )
+
   test.equal(
     result.toString(),
+    expected.toString(),
     expected.toString()
   )
   test.end()
 })
 
 run('it adds modifiers', function(test) {
-  var expected = /^[a-z]{2}$/i
+  var examples = [
+    { input: concat('^', /[a-z]{2}$/, 'i'), output: /^[a-z]{2}$/i },
+    { input: concat(/^[a-z]{2}/, /$/i), output: /^[a-z]{2}$/i },
+    { input: concat(escape('example.com')), output: /example\.com/ },
+    { input: concat(escape('example.org')), output: /example\.org/ }
+  ]
 
-  var one = concat('^', /[a-z]{2}$/, 'i')
-  test.equal(
-    one.toString(),
-    expected.toString()
-  )
-
-  var two = concat(/^[a-z]{2}/, /$/i)
-  test.equal(
-    two.toString(),
-    expected.toString()
-  )
+  examples.forEach(function(example) {
+    test.equal(
+      example.input.toString(),
+      example.output.toString(),
+      example.output.toString()
+    )
+  })
 
   test.end()
 })

@@ -1,6 +1,6 @@
 var slice = Array.prototype.slice
 var boundary = /(^\/|\/$)/g
-var modifier = /([migy]*)?$/
+var modifier = /(^|\/)([migy]*)?$/
 
 module.exports = function() {
   var pieces = slice.call(arguments)
@@ -32,7 +32,7 @@ module.exports = function() {
       .replace(boundary, '')
 
     modifiers = (piece.match(modifier) || [])
-      .slice(1)
+      .slice(2)
       .join('')
   }
 
