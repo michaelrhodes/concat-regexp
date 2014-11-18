@@ -5,10 +5,10 @@ var modifier = /(^|\/)([migy]+)$/
 module.exports = function() {
   var pieces = slice.call(arguments)
   var regexp = ''
+  var modifiers = ''
 
   var piece
   var isRegExp
-  var modifiers
   var i = -1
   var last = pieces.length - 1
 
@@ -25,18 +25,18 @@ module.exports = function() {
       pieces[i].toString()
 
     // Strip modifiers
-    regexp += piece.replace(modifier, '$1')
+    regexp += isRegExp || !boundary.test(piece) ?
+      piece.replace(modifier, '$1') :
+      piece
 
     // Set modifiers
-    if (i === last) {
-      if (!isRegExp && boundary.test(pieces[i])) {
-        continue
-      }
-
-      modifiers = (pieces[i].toString().match(modifier) || [])
-        .slice(2)
-        .join('')
+    if (!isRegExp && boundary.test(pieces[i])) {
+      continue
     }
+
+    modifiers += (pieces[i].toString().match(modifier) || [])
+      .slice(2)
+      .join('')
   }
 
   return RegExp(regexp, modifiers)

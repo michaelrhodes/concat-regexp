@@ -21,7 +21,8 @@ run('it adds modifiers', function(test) {
     { input: concat('^', /[a-z]{2}$/, 'i'), output: /^[a-z]{2}$/i },
     { input: concat(/^[a-z]{2}/, /$/i), output: /^[a-z]{2}$/i },
     { input: concat(escape('example.com')), output: /example\.com/ },
-    { input: concat(escape('example.org')), output: /example\.org/ }
+    { input: concat(escape('example.org')), output: /example\.org/ },
+    { input: concat(/a/i, 'g'), output: /a/ig }
   ]
 
   examples.forEach(function(example) {
