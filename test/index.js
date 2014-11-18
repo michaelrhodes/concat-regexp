@@ -35,11 +35,21 @@ run('it adds modifiers', function(test) {
   test.end()
 })
 
-run('it handles lone regular expressions like RegExp', function(test) {
+run('it doesn’t treat forward slashes in strings as pattern boundaries', function(test) {
   test.deepEqual(
-    concat('/a/'),
-    RegExp('/a/'),
-    RegExp('/a/').toString()
+    concat('', '/a/').source,
+    '/a/',
+    '/a/'
+  )
+    
+  test.notOk(
+    concat('', '/a/i').test('/A/'),
+    'and it avoids false-positive modifiers'
+  )
+
+  test.ok(
+    concat('', '/a/', 'i').test('/A/'),
+    'and it avoids false-positive modifiers'
   )
 
   test.end()

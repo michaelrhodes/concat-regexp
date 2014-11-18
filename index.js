@@ -1,47 +1,42 @@
 var slice = Array.prototype.slice
-var boundary = /(^\/|\/$)/g
-var modifier = /(^|\/)([migy]*)?$/
+var boundary = /(^\/|\/$)/
+var modifier = /(^|\/)([migy]+)$/
 
 module.exports = function() {
   var pieces = slice.call(arguments)
-  var piece = undefined
-  var modifiers = undefined
   var regexp = ''
 
-  var i = 0
+  var piece
+  var isRegExp
+  var modifiers
+  var i = -1
   var last = pieces.length - 1
-  var loner = last === i 
 
-  for (; i <= last; i++) {
+  while (i++ < last) {
     // Be kind, tolerate undefined
     if (pieces[i] === undefined) {
       continue 
     }
 
-    // Remove forward-slash boundaries
-    piece = pieces[i].toString()
+    isRegExp = pieces[i] instanceof RegExp
 
-    // Don’t strip the boundaries of
-    // lone regular expressions
-    if (loner && boundary.test(piece)) {
-      regexp += piece
-      continue
+    piece = isRegExp ?
+      pieces[i].source :
+      pieces[i].toString()
+
+    // Strip modifiers
+    regexp += piece.replace(modifier, '$1')
+
+    // Set modifiers
+    if (i === last) {
+      if (!isRegExp && boundary.test(pieces[i])) {
+        continue
+      }
+
+      modifiers = (pieces[i].toString().match(modifier) || [])
+        .slice(2)
+        .join('')
     }
-
-    // Add sanitised piece
-    if (i < last) {
-      regexp += piece.replace(boundary, '')
-      continue
-    }
-
-    // Find modifiers in the last piece
-    regexp += piece
-      .replace(modifier, '')
-      .replace(boundary, '')
-
-    modifiers = (piece.match(modifier) || [])
-      .slice(2)
-      .join('')
   }
 
   return RegExp(regexp, modifiers)
